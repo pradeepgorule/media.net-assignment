@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To do List</title>
+</head>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
+
+<body>
+<div id="add-list" class="header">
+		<form  name="myForm" >
+  <input type="text"  id="input"name="email"  placeholder="Add some text">
+  <input type="button" name="submit" value="Add" id="btn" onclick="newElement()">
+  
+  </form>
+
+
+</div>
+<div id="email_err"></div>
+<div class="main">
+  <input type="text" id="search" class="inp" placeholder="Search Text" onkeyup="search()">
+  <span id="icon"><i class="fas fa-sort" onclick="sortListDir()" ></i></span>
+<ul id="list">
+  <li>ABc@mail.com</li>
+  <li>ABc@mail.com</li>
+  <li>Xyz@gmail.com</li>
+  
+</ul>
+</div>
+<div>
+<h5>Note: inside this app you can add emailid , sort email id alphabetically , remove emailid and sort email alphabetically</h5>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+  var list = document.getElementsByTagName("li");
+
+  var i;
+    for (i = 0; i < list.length; i++)
+    {
+      var span = document.createElement("i");
+        span.className = "far fa-times-circle";
+        list[i].appendChild(span);
+        list.className="a";
+
+    }
+
+
+  var close = document.getElementsByClassName("far fa-times-circle");
+  var i;
+    for (i = 0; i < close.length; i++)
+    {
+       close[i].onclick = function()
+      {
+       var div = this.parentElement;
+         div.style.display = "none";
+      }
+    }
+
+  var lists = document.querySelector('ul');
+  lists.addEventListener('click', function(ev)
+  {
+      if (ev.target.tagName === 'LI')
+      {
+        ev.target.classList.toggle('checked');
+
+
+      }
+  }, false);
+
+  function newElement() 
+{
+
+	var y = document.forms["myForm"]["email"].value;
+		if (y == "") { 
+			document.getElementById("email_err").innerHTML = "Enter your email";
+			return false;
+		}
+		else
+		{
+			document.getElementById("email_err").innerHTML = "";
+		}
+
+		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
+		if(!y.match(mailformat))  
+		{
+			document.getElementById("email_err").innerHTML = "you have entered invalid email Id";
+
+			return false; 
+		}
+		else
+		{
+			document.getElementById("email_err").innerHTML = "";
+		}
+
+
+      var li = document.createElement("li");
+      var inputValue = document.getElementById("input").value;
+      var t = document.createTextNode(inputValue);
+      li.appendChild(t);
+        if (inputValue === '')
+        {
+          alert("Please add some text");
+        } 
+        else
+        {
+          document.getElementById("list").appendChild(li);
+        }
+       
+
+      var span = document.createElement("i");
+      span.className = "far fa-times-circle";
+ 
+      li.appendChild(span);
+
+        for (i = 0; i < close.length; i++)
+        {
+          close[i].onclick = function()
+          {
+              var div = this.parentElement;
+              div.style.display = "none";
+          }
+        }
+
+         
+}
+ 
+function search() {
+    var li;
+    input = document.getElementById("search");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("list");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        
+        txtValue = li[i].textContent || li[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+ 
+function sortListDir() {
+  var list, i, switching, b, shouldSwitch, dir, switchcount = 0;
+  list = document.getElementById("list");
+  switching = true;
+  dir = "asc"; 
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("LI");
+    for (i = 0; i < (b.length - 1); i++) {
+      
+      shouldSwitch = false;
+      if (dir == "asc") {
+        if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (b[i].innerHTML.toLowerCase() < b[i + 1].innerHTML.toLowerCase()) {
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+      switchcount ++;
+    } else {
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
